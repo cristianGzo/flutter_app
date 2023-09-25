@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,6 +9,31 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //para login hasta antes del @oveeride
+  bool isSessionSaved = false;
+
+  void initState() {
+    super.initState();
+    checkSavedSession(); // Verificar si hay una sesión guardada al iniciar la aplicación
+  }
+
+  void checkSavedSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? sessionSaved = prefs.getBool('sessionSaved');
+    if (sessionSaved != null && sessionSaved) {
+      // Si la sesión está guardada, redirige automáticamente al Dashboard
+      Navigator.pushReplacementNamed(context, '/dash');
+      setState(() {
+       isSessionSaved=isSessionSaved ?? false; 
+      });
+    }
+  }
+
+  void saveSession(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('sessionSaved', value);
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController txtConUser = TextEditingController();
@@ -36,9 +62,36 @@ class _LoginScreenState extends State<LoginScreen> {
       label: Text('Entrar'),
       icon: Icon(Icons.login),
       backgroundColor: Colors.green,
-      onPressed: () {
-        Navigator.pushNamed(context, '/dash');
+      onPressed: () async {
+        // Navigator.pushNamed(context, '/dash');
+        if (isSessionSaved) {
+          saveSession(true); // Guardar la sesión solo si el checkbox está marcado.
+        }
+        //Navigator.pushNamed(context, '/dash');
+        Navigator.pushReplacementNamed(context, '/dash');
       },
+    );
+
+    //sto tambien es del login
+    final sessionCheckbox = Checkbox(
+      value: isSessionSaved,
+      onChanged: (value) {
+        setState(() {
+          isSessionSaved = value!;
+        });
+      },
+    );
+
+    final sessionCheckboxContainer = Container(
+      margin: const EdgeInsets.only(top: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center, // Centrar el checkbox
+        children: [
+          Text('Guardar sesión'),
+          SizedBox(width: 10.0),
+          sessionCheckbox,
+        ],
+      ),
     );
 
 //esto es lo que se va mostrar en pantalla y se acomoda como pila
@@ -55,7 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              
               Container(
                 height: 200,
                 //color: Colors.grey,
@@ -64,14 +116,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Color.fromARGB(255, 23, 36, 53)
-                  ),
+                    color: Color.fromARGB(255, 23, 36, 53)),
                 child: Column(
                   // padding: EdgeInsets.symmetric(horizontal: 10),//para agregar paddin solo en lo horizontal symetrcic para eso se usa
                   children: [txtUser, const SizedBox(height: 10), txtPass],
                 ),
               ),
               imgLogo,
+              sessionCheckboxContainer,
             ],
           ),
         ),
