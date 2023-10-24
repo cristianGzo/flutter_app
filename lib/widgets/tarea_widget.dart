@@ -3,10 +3,8 @@ import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/database/agendadb.dart';
 import 'package:flutter_app/models/tarea_model.dart';
 import 'package:flutter_app/screens/add_tarea.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+
 
 class TareaWidget  extends StatelessWidget {
   TareaWidget ({super.key, required this.tareaModel, this.agendaDB});
@@ -25,37 +23,6 @@ class TareaWidget  extends StatelessWidget {
     return 'Desconocido'; 
   }
 }
-// Método para programar una notificación
-/*
-  Future<void> scheduleNotification(
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-      TareaModel tareaModel) async {
-        tz.initializeTimeZones();
-    final DateTime recordatorio = tareaModel.fecRecordatorio ?? DateTime.now();
-    final tz.TZDateTime scheduledDate = tz.TZDateTime.from(recordatorio, tz.local);
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'TareaRecordatorio',
-      'TareaRecordatorio',
-      'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: false,
-    );
-     NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    
-    // Programe la notificación
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Recordatorio de tarea',
-      'Recuerda tu tarea: ${tareaModel.nomTarea}',scheduledDate,
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,payload: 'custom notification payload',
-    );
-  }*/
 
 
   @override

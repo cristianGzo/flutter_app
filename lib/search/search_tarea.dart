@@ -41,7 +41,21 @@ class SearchTarea extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ListTile(title: Text('Suggestions'),);
+    //return ListTile(title: Text('Suggestions'),);
+    return ListView(
+    children: [
+      for (var suggestion in _performSearch(query))
+        ListTile(
+          title: Text(
+            suggestion.nomTarea ?? '',
+            style: TextStyle(color: Colors.black), // Establece el color del texto
+          ),
+          onTap: () {
+            // Implementa el manejo de selección aquí
+          },
+        ),
+    ],
+  );
   }
 
 List<TareaModel> _performSearch(String query) {

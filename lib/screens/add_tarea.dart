@@ -3,9 +3,7 @@ import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/database/agendadb.dart';
 import 'package:flutter_app/models/tarea_model.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+
 
 
 class AddTarea extends StatefulWidget {
@@ -18,8 +16,7 @@ class AddTarea extends StatefulWidget {
 }
 
 class _AddTareaState extends State<AddTarea> {
-   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+   
   String? dropDownValue = "Pendiente";
   TextEditingController txtConName = TextEditingController();
   TextEditingController txtConDsc = TextEditingController();

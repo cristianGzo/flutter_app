@@ -5,6 +5,9 @@ import 'package:flutter_app/models/tarea_model.dart';
 import 'package:flutter_app/search/search_tarea.dart';
 import 'package:flutter_app/widgets/tarea_widget.dart';
 
+
+
+
 class TareasScreen extends StatefulWidget {
   const TareasScreen({super.key});
 
@@ -13,6 +16,7 @@ class TareasScreen extends StatefulWidget {
 }
 
 class _TareasScreenState extends State<TareasScreen> {
+  
   AgendaDB? agendaDB;
   TareaModel? tareaModel;
   List<TareaModel> tareas = [];
@@ -22,7 +26,9 @@ class _TareasScreenState extends State<TareasScreen> {
     super.initState();
     agendaDB = AgendaDB();
     fetchTareas();
+    
   }
+  
    Future<void> fetchTareas() async {
     final tareasList = await agendaDB!.GETALLTAREA();
     setState(() {
@@ -41,7 +47,7 @@ class _TareasScreenState extends State<TareasScreen> {
   }
 }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -65,6 +71,7 @@ class _TareasScreenState extends State<TareasScreen> {
           valueListenable:
               GlobalValues.flagTarea, //valor que se va estar monitoreando
           builder: (context, value, _) {
+            
             return FutureBuilder(
                 future: agendaDB!.GETALLTAREA(),
                 builder: (BuildContext context,
