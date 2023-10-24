@@ -1,67 +1,49 @@
+import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/onboard_model.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_app/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnBoard extends StatefulWidget {
   @override
-  _OnBoardState createState() => _OnBoardState();
+  State<OnBoard> createState() => _OnBoardState();
 }
 
-class _OnBoardState extends State<OnBoard> implements TickerProvider {
-  @override
-  Ticker createTicker(TickerCallback onTick) {
-    return Ticker(onTick);
-  }
-
+class _OnBoardState extends State<OnBoard> {
   int currentIndex = 0;
-  late PageController _pageController;
-//ctrl de animacion
-  late AnimationController _textAnimationController;
-  late Animation<Offset> _textSlideAnimation;
-
-  @override
-  void initState() {
-    _pageController = PageController(initialPage: 0);
-    _textAnimationController = AnimationController(
-      duration: const Duration(seconds: 1), // Duración de la animación
-      vsync: this,
-    );
-
-    _textSlideAnimation = Tween<Offset>(
-      begin: const Offset(0.0, -1.0), // Posición inicial
-      end: const Offset(0.0, 0.0), // Posición final en el centro de la pantalla
-    ).animate(CurvedAnimation(
-      parent: _textAnimationController,
-      curve: Curves
-          .easeInOut, // Curva de animación (puedes ajustarla según tus preferencias)
-    ));
-    _textAnimationController.forward();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    _textAnimationController.dispose();
-    super.dispose();
-  }
-
-  _StoreOnBoardInfo() async {
-    int isViewed = 0;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('onBoard', isViewed);
-  }
-
+//implements TickerProvider {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-        actions: [
+        body: ConcentricPageView(
+            colors: const [
+          Color.fromARGB(255, 0, 0, 0),
+          Color.fromARGB(255, 1, 0, 30),
+          Colors.black
+        ],
+            physics: NeverScrollableScrollPhysics(),
+            onChange: (page) {
+              setState(() {
+                currentIndex = page;
+                if (currentIndex == 1) {
+                  /* Navigator.pushNamed(context, '/login_screen');*/
+                }
+              });
+            },
+            itemBuilder: (int index) {
+              return /*Center(
+            child: Container(
+              child: Text('screen $index'),
+            ),
+          );*/
+                  /*Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+              backgroundColor: Colors.black,
+              elevation: 0,
+              /*actions: [
           TextButton(
             onPressed: () async {
               await _StoreOnBoardInfo();
@@ -73,24 +55,24 @@ class _OnBoardState extends State<OnBoard> implements TickerProvider {
               style: TextStyle(color: Colors.green),
             ),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: PageView.builder(
-            itemCount: screen.length,
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (int index) {
-              setState(() {
-                currentIndex = index;
-                _textAnimationController
+        ],*/
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: PageView.builder(
+                  itemCount: screen.length,
+                  //controller: _pageController,
+                  /*physics: const NeverScrollableScrollPhysics(),
+                  onPageChanged: (int index) {
+                    setState(() {
+                      currentIndex = index;
+                      /*_textAnimationController
                     .reset(); // Reiniciar la animación al cambiar de página
-                _textAnimationController.forward();
-              });
-            },
-            itemBuilder: (context, index) {
-              return Column(
+                _textAnimationController.forward();*/
+                    });
+                  },*/
+                  itemBuilder: (context, index) {*/
+                  Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -116,6 +98,23 @@ class _OnBoardState extends State<OnBoard> implements TickerProvider {
                     height: 250,
                     width: 250,
                   ),
+                  Text(
+                    screen[index].txt,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 27.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    screen[index].desc,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.white,
+                    ),
+                  ),
                   Container(
                     height: 10.0,
                     child: ListView.builder(
@@ -138,7 +137,8 @@ class _OnBoardState extends State<OnBoard> implements TickerProvider {
                           );
                         }),
                   ),
-                  SlideTransition(
+
+                  /*SlideTransition(
                     position: _textSlideAnimation,
                     child: Text(
                       screen[index].txt,
@@ -160,8 +160,8 @@ class _OnBoardState extends State<OnBoard> implements TickerProvider {
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                  InkWell(
+                  ),*/
+                  /*  InkWell(
                     onTap: () async {
                       if (index == screen.length - 1) {
                         await _StoreOnBoardInfo();
@@ -192,10 +192,18 @@ class _OnBoardState extends State<OnBoard> implements TickerProvider {
                       ]),
                     ),
                   ),
+                
+                */
                 ],
               );
-            }),
-      ),
-    );
+            },
+            onFinish: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        },
+            )
+            );
   }
 }

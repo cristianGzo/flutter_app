@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/assets/styles_app.dart';
+import 'package:flutter_app/provider/test_provider.dart';
 import 'package:flutter_app/routes.dart';
 import 'package:flutter_app/screens/login_screen.dart';
 import 'package:flutter_app/screens/onboard_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 int? isViewed;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Configura las notificaciones locales
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   isViewed = prefs.getInt('onBoard');
   runApp(const MyApp());
 }
@@ -32,12 +45,15 @@ class MyApp extends StatelessWidget {
           return ValueListenableBuilder(
             valueListenable: GlobalValues.flagTheme,
             builder: (context, value, _) {
-              return MaterialApp(
-                routes: getRoutes(),
-                theme: value
-                    ? StylesApp.darkTheme(context)
-                    : StylesApp.lightTheme(context),
-                home: isViewed != 0 ? OnBoard() : const LoginScreen(),
+              return ChangeNotifierProvider(
+                create: (context)=> TestProvider(), //estara escuchando todo el arbol desde la raiz para escuchar los cambios en cualquier parte
+                child: MaterialApp(
+                  routes: getRoutes(),
+                  theme: value
+                      ? StylesApp.darkTheme(context)
+                      : StylesApp.lightTheme(context),
+                  home: isViewed != 0 ? OnBoard() : const LoginScreen(),
+                ),
               );
             },
           );

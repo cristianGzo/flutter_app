@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       width: 150,
       margin: EdgeInsets.only(bottom: 180),
       decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage('../../assets/logo.png')),
+        image: DecorationImage(image: AssetImage('assets/logo.png')),
       ),
     );
 
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
             image: DecorationImage(
                 opacity: 1,
                 fit: BoxFit.fill,
-                image: AssetImage('../../assets/backLg.jpg'))),
+                image: AssetImage('assets/backLg.jpg'))),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 100.0),
           child: Stack(

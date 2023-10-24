@@ -1,29 +1,27 @@
-//import 'dart:ffi';
-//import 'dart:js_interop_unsafe';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/database/agendadb.dart';
-import 'package:flutter_app/models/task_model.dart';
-import 'package:flutter_app/screens/add_task.dart';
+import 'package:flutter_app/models/carrera_model.dart';
+import 'package:flutter_app/screens/add_carrera.dart';
 
-class CardTaskWidget extends StatelessWidget {
-  CardTaskWidget({super.key, required this.taskModel, this.agendaDB});
+class CarreraWidget extends StatelessWidget {
+  CarreraWidget({super.key, required this.carreraModel, this.agendaDB});
 
-  TaskModel taskModel; //llaves indican que los parametros son nombrados
+  CarreraModel carreraModel; //llaves indican que los parametros son nombrados
   AgendaDB? agendaDB;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 10),
-        padding: EdgeInsets.all(10),
+       margin: EdgeInsets.only(top: 6),
+        padding: EdgeInsets.all(6),
         decoration: const BoxDecoration(
           color: Colors.green,
         ),
         child: Row(children: [
           Column(
-            children: [Text(taskModel.nameTask!), Text(taskModel.dscTask!)],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [Text('Carrera:   ${carreraModel.nomCarrera}') ],
           ),
           Expanded(child: Container()), //es como espacio entre las columnas
           Column(
@@ -32,7 +30,7 @@ class CardTaskWidget extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => addTask(taskModel: taskModel))),
+                        builder: (context) => AddCarrera(carreraModel: carreraModel))),
                 child: Image.asset(
                   'assets/mango.png',
                   height: 50,
@@ -50,11 +48,11 @@ class CardTaskWidget extends StatelessWidget {
                             TextButton(
                                 onPressed: () {
                                   agendaDB!
-                                      .DELETE('tblTareas', taskModel.idTask!)
+                                      .DELETECARRERA('Carrera', carreraModel.idCarrera!)
                                       .then((value) {
                                     Navigator.pop(context);
-                                    GlobalValues.flagTask.value =
-                                        !GlobalValues.flagTask.value;
+                                    GlobalValues.flagCarrera.value =
+                                        !GlobalValues.flagCarrera.value;
                                   });
                                 },
                                 child: Text('Si')),
@@ -70,6 +68,6 @@ class CardTaskWidget extends StatelessWidget {
             ],
           ),
         ])
-        );
+    );
   }
 }

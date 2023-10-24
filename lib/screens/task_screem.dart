@@ -28,7 +28,7 @@ class _TaskScreenState extends State<TaskScreen> {
         title: Text('Task Manager'),
         actions: [
           IconButton(
-            onPressed: ()=> Navigator.pushNamed(context, '/add').then((value) { setState((){});
+            onPressed: ()=> Navigator.pushNamed(context, '/add').then((value) { setState(() {});
             }
             ), 
             icon: Icon(Icons.task)
@@ -47,7 +47,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   itemBuilder: (BuildContext context, int index){
                     return CardTaskWidget(
                       taskModel: snapshot.data![index], 
-                      agendaDB: agendaDB);
+                      agendaDB: agendaDB,);
                   }
                 );
               }else{

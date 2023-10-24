@@ -1,29 +1,37 @@
-//import 'dart:ffi';
-//import 'dart:js_interop_unsafe';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/database/agendadb.dart';
-import 'package:flutter_app/models/task_model.dart';
-import 'package:flutter_app/screens/add_task.dart';
+import 'package:flutter_app/models/profesor_model.dart';
+import 'package:flutter_app/screens/add_profesor.dart';
 
-class CardTaskWidget extends StatelessWidget {
-  CardTaskWidget({super.key, required this.taskModel, this.agendaDB});
+class ProfesorWidget extends StatelessWidget {
+  ProfesorWidget({super.key, required this.profesorModel, this.agendaDB});
 
-  TaskModel taskModel; //llaves indican que los parametros son nombrados
+  ProfesorModel profesorModel; //llaves indican que los parametros son nombrados
   AgendaDB? agendaDB;
 
+
+  String carrera(int? valor) {
+  if (valor == 1) {
+    return 'Industrial';
+  } else if (valor == 2) {
+    return 'Sistemas';
+  } else {
+    return 'Otra carrera';
+  } 
+}
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 10),
         padding: EdgeInsets.all(10),
         decoration: const BoxDecoration(
           color: Colors.green,
         ),
         child: Row(children: [
           Column(
-            children: [Text(taskModel.nameTask!), Text(taskModel.dscTask!)],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [Text('Profesor:   ${profesorModel.nomProfe!}'), Text('Email:   ${profesorModel.email!}'), Text('Carrera:   ${carrera(profesorModel.idCarrera)}')],
           ),
           Expanded(child: Container()), //es como espacio entre las columnas
           Column(
@@ -32,7 +40,7 @@ class CardTaskWidget extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => addTask(taskModel: taskModel))),
+                        builder: (context) => AddProfesor(profesorModel: profesorModel))),
                 child: Image.asset(
                   'assets/mango.png',
                   height: 50,
@@ -50,11 +58,11 @@ class CardTaskWidget extends StatelessWidget {
                             TextButton(
                                 onPressed: () {
                                   agendaDB!
-                                      .DELETE('tblTareas', taskModel.idTask!)
+                                      .DELETEPROFESOR('Profesor', profesorModel.idProfe!)
                                       .then((value) {
                                     Navigator.pop(context);
-                                    GlobalValues.flagTask.value =
-                                        !GlobalValues.flagTask.value;
+                                    GlobalValues.flagProfe.value =
+                                        !GlobalValues.flagProfe.value;
                                   });
                                 },
                                 child: Text('Si')),
@@ -70,6 +78,6 @@ class CardTaskWidget extends StatelessWidget {
             ],
           ),
         ])
-        );
+    );
   }
 }

@@ -7,7 +7,7 @@ class StylesApp {
     return theme.copyWith(
       colorScheme: Theme.of(context).colorScheme.copyWith(
         primary: Color.fromARGB(255, 255, 0, 0),
-      ),
+      )
     );
   }
 

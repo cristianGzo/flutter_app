@@ -37,22 +37,34 @@ class _DashBooardScreenState extends State<DashBooardScreen> {
         children: [
           const UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+                backgroundImage: AssetImage('assets/lince.png'), //NetworkImage('https://i.pravatar.cc/300'),
               ),
               accountName: Text('Rubensin'),
               accountEmail: Text('isTorres@gmail.com')),
           ListTile(
-            leading: Image.network('../../assets/mango.png'),
-            trailing: Icon(Icons.chevron_right),
-            title: Text('FruitApp'),
+            leading: Image.asset('assets/mango.png'),
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text('FruitApp'),
             subtitle: Text('Carrusel'),
             onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.task_alt_outlined),
-            trailing: Icon(Icons.chevron_right),
-            title: Text('Task Manager'),
-            onTap: () => Navigator.pushNamed(context, '/task'),
+            leading: const Icon(Icons.task_alt_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text('Task Manager'),
+            onTap: () => Navigator.pushNamed(context, '/popuScreen'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_work),
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text('Practia 4'),
+            onTap: () => Navigator.pushNamed(context, '/opc'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home_work),
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text('Test Provider'),
+            onTap: () => Navigator.pushNamed(context, '/provider'),
           ),
           DayNightSwitcher(
             isDarkModeEnabled: GlobalValues.flagTheme.value,
@@ -62,7 +74,7 @@ class _DashBooardScreenState extends State<DashBooardScreen> {
             },
           ),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
                 Icons.logout), // Ícono de cerrar sesión o foto relacionada xd
             title: Text('Cerrar sesión'),
             onTap: () {
