@@ -66,6 +66,14 @@ class _DashBooardScreenState extends State<DashBooardScreen> {
             title: const Text('Test Provider'),
             onTap: () => Navigator.pushNamed(context, '/provider'),
           ),
+          ListTile(
+            leading: const Icon(Icons.home_work),
+            trailing: const Icon(Icons.chevron_right),
+            title: const Text('Peliculas'),
+            onTap: () {
+              Navigator.pushNamed(context, '/popuScreen');
+            },
+          ),
           DayNightSwitcher(
             isDarkModeEnabled: GlobalValues.flagTheme.value,
             onStateChanged: (isDarkModeEnabled) {

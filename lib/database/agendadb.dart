@@ -5,6 +5,7 @@ import 'package:flutter_app/models/profesor_model.dart';
 import 'package:flutter_app/models/tarea_model.dart';
 import 'package:flutter_app/models/task_model.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_app/models/popular_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -139,5 +140,16 @@ class AgendaDB{
   Future<int> DELETECARRERA(String tblName, int idCarrera ) async { //int en esta linea, significa que del insert devolvera el id que es de tipo int
     var conexion = await database; //hace o verifica la conexion
     return conexion!.delete(tblName, where: 'idCarrera = ?', whereArgs: [idCarrera]);
+  }
+  Future<List<PopularModel>> GETALLPOPULAR() async {
+    var conexion = await database;
+    var result = await conexion!.query('tblPopular');
+    return result.map((event) => PopularModel.fromMap(event)).toList();
+  }
+
+  Future<List<PopularModel>> GETPOPULAR(int id) async {
+    var conexion = await database;
+    var result = await conexion!.query('tblPopular', where: 'id=$id');
+    return result.map((event) => PopularModel.fromMap(event)).toList();
   }
 }

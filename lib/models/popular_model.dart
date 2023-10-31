@@ -39,11 +39,26 @@ class PopularModel {
       popularity: map['popularity'],
       posterPath: map['poster_path'] ?? '',
       releaseDate: map['release_date'],
-      title: map['tile'],
+      title: map['title'],
       voteAverage: (map['vote_average'] is int)
       ? (map['vote_average'] as int).toDouble()
       : map['vote_average'],
       voteCount: map['vote_count']
     );
+  }
+   Map<String,dynamic> toMap(){
+    return {
+      'backdrop_path': backdropPath,
+      'id': id,
+      'original_languaje': originalLanguage,
+      'original_title': originalTitle,
+      'overview': overview,
+      'popularity': popularity,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
+      'title': title,
+      'vote_average': voteAverage,
+      'vote_count': voteCount
+    };
   }
 }

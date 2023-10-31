@@ -24,13 +24,14 @@ Map<String,WidgetBuilder> getRoutes(){
     '/task' : (BuildContext context) => TaskScreen(),
     '/popuScreen': (BuildContext context) => PopularScreen(),
     '/opc' : (BuildContext context) => OpcionesScreen(),
-    '/detail': (BuildContext context) => DetailMovieScreen(),
+    //'/detail': (BuildContext context) => DetailMovieScreen(),
     '/provider' : (BuildContext context) => ProviderScreen(),
     '/tareas': (BuildContext context) => TareasScreen(),
     '/addTarea': (BuildContext context) => AddTarea(), 
     '/addProfesor' : (BuildContext context) => AddProfesor(),
     '/maestros' : (BuildContext context) => ProfesorScreen(),
     '/carrera' : (BuildContext context) => CarreraScreen(),
-    '/addCarrera' : (BuildContext context) => AddCarrera()
+    '/addCarrera' : (BuildContext context) => AddCarrera(),
+    
   };
 }
