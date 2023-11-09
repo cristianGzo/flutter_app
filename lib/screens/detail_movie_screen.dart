@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/database/agendadb.dart';
+import 'package:flutter_app/models/favorite_model.dart';
 import 'package:flutter_app/widgets/CardActor.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_app/models/actor_model.dart';
@@ -9,9 +11,18 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:provider/provider.dart';
 
 class DetailMovieScreen extends StatefulWidget {
-  final PopularModel model;
-   DetailMovieScreen({Key? key, required this.model}) : super(key: key);
+  final PopularModel? model;
+  final int? id;
+  DetailMovieScreen.model({Key? key, required this.model})
+      : id = null,
+        super(key: key);
 
+  // Constructor que recibe un ID
+  DetailMovieScreen.id({Key? key, required this.id})
+      : model = null,
+        super(key: key);
+
+//final int id;
 
   @override
   State<DetailMovieScreen> createState() => _DetailMovieScreenState();
@@ -19,7 +30,21 @@ class DetailMovieScreen extends StatefulWidget {
 
 class _DetailMovieScreenState extends State<DetailMovieScreen> {
   final ApiPopular apiPopular = ApiPopular();
-  
+  late bool fav = false;
+  @override
+void initState() {
+  super.initState();
+  loadFavorites(); // Llama a la función para cargar los favoritos
+}
+
+// Nueva función asincrónica para cargar los favoritos
+Future<void> loadFavorites() async {
+  List<FavoriteModel> favorites = await AgendaDB().GETFAV();
+  bool isFavorite = favorites.any((favorite) => favorite.id == widget.model?.id);
+  setState(() {
+    fav = isFavorite;
+  });
+}
   /*PopularModel? movie;
   @override
   Widget build(BuildContext context) {
@@ -30,13 +55,13 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
   }*/
   @override
   Widget build(BuildContext context) {
-  TestProvider flag = Provider.of<TestProvider>(context);
-  return Scaffold(
+    TestProvider flag = Provider.of<TestProvider>(context);
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Detail Screen'),
       ),
       body: Hero(
-        tag: widget.model.id!,
+        tag: widget.model?.id?.toString() ?? '',
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -44,7 +69,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                            'https://image.tmdb.org/t/p/w500/${widget.model.backdropPath}'),
+                            'https://image.tmdb.org/t/p/w500/${widget.model?.backdropPath ?? ''}'),
                         fit: BoxFit.fitHeight,
                         opacity: 0.3)),
                 child: Padding(
@@ -54,7 +79,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          widget.model.title.toString(),
+                          widget.model?.title.toString() ?? 'no disponible',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.white,
@@ -73,59 +98,78 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                             margin: EdgeInsets.all(5),
                             height: 200,
                             width: 100,
-                            child: Image.network('https://image.tmdb.org/t/p/w500/${widget.model.posterPath}'),
+                            child: Image.network(
+                                'https://image.tmdb.org/t/p/w500/${widget.model?.posterPath}'),
                           ),
                           Container(
                             child: RatingBar(
-                        initialRating: widget.model.voteAverage! / 2,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        ratingWidget: RatingWidget(
-                            full: const Icon(Icons.star,
-                                color: Color.fromARGB(255, 255, 238, 0)),
-                            half: const Icon(
-                              Icons.star_half,
-                              color: Color.fromARGB(255, 255, 238, 0),
+                              initialRating: (widget.model?.voteAverage ?? 0) / 2,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              ratingWidget: RatingWidget(
+                                  full: const Icon(Icons.star,
+                                      color: Color.fromARGB(255, 255, 238, 0)),
+                                  half: const Icon(
+                                    Icons.star_half,
+                                    color: Color.fromARGB(255, 255, 238, 0),
+                                  ),
+                                  empty: const Icon(
+                                    Icons.star_outline,
+                                    color: Color.fromARGB(255, 255, 238, 0),
+                                  )),
+                              ignoreGestures: true,
+                              onRatingUpdate: (value) {},
                             ),
-                            empty: const Icon(
-                              Icons.star_outline,
-                              color: Color.fromARGB(255, 255, 238, 0),
-                            )),
-                        ignoreGestures: true,
-                        onRatingUpdate: (value) {},
-                      ),
                           )
                         ],
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                          'Sinopsis',
-                          style: TextStyle(
+                      Row(
+                        children: [
+                          Text(
+                            'Sinopsis',
+                            style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            widget.model.overview.toString(),
-                            textAlign: TextAlign.justify,
-                            style: const TextStyle(
-                              fontSize: 16,
+                              color: Colors.white,
                             ),
                           ),
+                          Spacer(), // Agrega espacio entre el texto y el icono
+                          IconButton(
+                            onPressed: () async {
+                              bool isFavorite = await addOrRemoveFavorite();
+                              setState(() {
+                                fav = isFavorite;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.favorite,
+                              color: fav ? Colors.red : Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          widget.model?.overview.toString() ?? '',
+                          textAlign: TextAlign.justify,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
-                        const SizedBox(
+                      ),
+                      const SizedBox(
                         height: 30,
                       ),
                       FutureBuilder(
-                        future: apiPopular.getVideo(widget.model.id!),
+                        future: apiPopular.getVideo(widget.model?.id ?? 0),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return YoutubePlayer(
@@ -156,8 +200,13 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                       ),
                       const SizedBox(height: 20),
                       FutureBuilder<List<ActorModel>?>(
-                        future: apiPopular.getAllActors(widget.model),
+                        future: widget.model != null
+                            ? apiPopular.getAllActors(widget.model!) : null, // Verificamos si widget.model no es nulo
                         builder: (context, snapshot) {
+                          if (widget.model == null) {
+                            // Aquí puedes manejar el caso en el que widget.model sea nulo
+                            return Text('El modelo es nulo');
+                          }
                           if (snapshot.hasData && snapshot.data != null) {
                             return SizedBox(
                               height: 150,
@@ -193,5 +242,28 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> addOrRemoveFavorite() async {
+    AgendaDB agendaDB = AgendaDB();
+    List<FavoriteModel> favorites = await agendaDB.GETFAV();
+    final int movieId = widget.model?.id ?? 0;
+
+    //if (favorites.any((favorite) => favorite.id == widget.model?.id)) {
+      if (favorites.any((favorite) => favorite.id == movieId)) {
+      // La película ya está en favoritos, la eliminamos.
+      //await agendaDB.DeleMovie(widget.model?.id! ?? 0);
+      await agendaDB.DeleMovie(movieId);
+      
+      return false;
+    } else {
+      // La película no está en favoritos, la agregamos.
+      Map<String, dynamic> data = {
+        'id_movie': widget.model?.id,
+        'posterPath': widget.model?.posterPath,
+      };
+      await agendaDB.INSERT("tblFav", data);
+      return true;
+    }
   }
 }

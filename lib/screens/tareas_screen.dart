@@ -63,7 +63,7 @@ class _TareasScreenState extends State<TareasScreen> {
           ),
           IconButton(
             onPressed: ()=> showSearch(context: context, delegate: SearchTarea(tareas)), 
-            icon: Icon(Icons.access_alarm)
+            icon: Icon(Icons.search)
           )
         ],
       ),

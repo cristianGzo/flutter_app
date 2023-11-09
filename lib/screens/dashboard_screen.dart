@@ -71,7 +71,7 @@ class _DashBooardScreenState extends State<DashBooardScreen> {
             trailing: const Icon(Icons.chevron_right),
             title: const Text('Peliculas'),
             onTap: () {
-              Navigator.pushNamed(context, '/popuScreen');
+              Navigator.pushNamed(context, '/homeMovie');
             },
           ),
           DayNightSwitcher(

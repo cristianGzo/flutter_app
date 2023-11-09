@@ -62,7 +62,7 @@ class _PopularScreenState extends State<PopularScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    DetailMovieScreen(model: model)));
+                                    DetailMovieScreen.model(model: model)));
                       },
                       child:
                           ItemMovieWidget(popularModel: snapshot.data![index]),

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/assets/global_values.dart';
 import 'package:flutter_app/assets/styles_app.dart';
@@ -13,6 +14,7 @@ int? isViewed;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // Configura las notificaciones locales
   isViewed = prefs.getInt('onBoard');

@@ -33,7 +33,7 @@ class _CarreraScreenState extends State<CarreraScreen> {
             onPressed: ()=> Navigator.pushNamed(context, '/addCarrera').then((value) { setState(() {});
             }
             ), 
-            icon: Icon(Icons.login)
+            icon: Icon(Icons.add)
           )
         ],
       ),

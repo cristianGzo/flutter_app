@@ -16,6 +16,10 @@ class ProfesorWidget extends StatelessWidget {
     return 'Industrial';
   } else if (valor == 2) {
     return 'Sistemas';
+  }else if (valor == 3) {
+    return 'Gestion';
+  }else if (valor == 4) {
+    return 'Electronica';
   } else {
     return 'Otra carrera';
   } 

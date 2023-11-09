@@ -8,10 +8,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_app/models/popular_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:flutter_app/models/favorite_model.dart';
 
 class AgendaDB{
 
-  static final nameDB = 'AGENDADB1';
+  static final nameDB = 'AGENDADB2';
   static final versionDB = 2;
 
   static Database? _database;
@@ -41,6 +42,12 @@ class AgendaDB{
       sttTask BYTE
       );''';
       db.execute(query);
+      query = '''CREATE TABLE tblFav (
+    id INTEGER PRIMARY KEY,
+    id_movie INTEGER UNIQUE,
+    posterPath VARCHAR(200)
+  );''';
+  db.execute(query);
   }
 
   Future<void> _upgradeTables(Database db, int version, int newVersion) async {
@@ -69,6 +76,12 @@ class AgendaDB{
       CREATE TABLE Carrera(
         idCarrera INTEGER PRIMARY KEY,
         nomCarrera varchar(50));''');
+      /*await db.execute('''
+      CREATE TABLE tblFav (
+        id INTEGER PRIMARY KEY,
+        id_movie INTEGER UNIQUE,
+        posterPath VARCHAR(200)
+      );''');*/
   }
 }
 
@@ -152,4 +165,25 @@ class AgendaDB{
     var result = await conexion!.query('tblPopular', where: 'id=$id');
     return result.map((event) => PopularModel.fromMap(event)).toList();
   }
+
+
+  /***************************PELICULAS FAVORITAS ********/
+Future<int> DeleMovie(int id) async {
+    var conexion = await database;
+    return conexion!.delete("tblFav", where: 'id_movie = ?', whereArgs: [id]);
+  }
+
+  Future<List<FavoriteModel>> GETFAV() async {
+    var conexion = await database;
+    var result = await conexion!.query('tblFav');
+    return result.map((item) => FavoriteModel.fromMap(item)).toList();
+  }
+
+  Future<List<FavoriteModel>> GETONEFAV(int id) async {
+    var conexion = await database;
+    var result =
+        await conexion!.query('tblFav', where: "id_movie = ?", whereArgs: [id]);
+    return result.map((item) => FavoriteModel.fromMap(item)).toList();
+  }
+
 }

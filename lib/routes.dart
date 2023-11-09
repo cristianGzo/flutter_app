@@ -8,11 +8,13 @@ import 'package:flutter_app/screens/add_task.dart';
 import 'package:flutter_app/screens/carrera_screen.dart';
 import 'package:flutter_app/screens/dashboard_screen.dart';
 import 'package:flutter_app/screens/detail_movie_screen.dart';
+import 'package:flutter_app/screens/home_movie_screen.dart';
 import 'package:flutter_app/screens/login_screen.dart';
 import 'package:flutter_app/screens/opciones_screen.dart';
 import 'package:flutter_app/screens/popular_screen.dart';
 import 'package:flutter_app/screens/profesor_screen.dart';
 import 'package:flutter_app/screens/provider_screen.dart';
+import 'package:flutter_app/screens/register_screen.dart';
 import 'package:flutter_app/screens/tareas_screen.dart';
 import 'package:flutter_app/screens/task_screem.dart';
 
@@ -32,6 +34,8 @@ Map<String,WidgetBuilder> getRoutes(){
     '/maestros' : (BuildContext context) => ProfesorScreen(),
     '/carrera' : (BuildContext context) => CarreraScreen(),
     '/addCarrera' : (BuildContext context) => AddCarrera(),
+    '/register' : (BuildContext context) => RegisterScreen(),
+    '/homeMovie' : (BuildContext context) => HomeMovieScreen(),
     
   };
 }

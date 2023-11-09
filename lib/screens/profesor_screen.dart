@@ -32,7 +32,7 @@ class _ProfesorScreenState extends State<ProfesorScreen> {
             onPressed: ()=> Navigator.pushNamed(context, '/addProfesor').then((value) { setState(() {});
             }
             ), 
-            icon: Icon(Icons.login)
+            icon: Icon(Icons.add)
           )
         ],
       ),

@@ -8,7 +8,23 @@ class SearchTarea extends SearchDelegate<String>{
    AgendaDB? agendaDB;
   // Constructor para pasar la lista de tareas
   SearchTarea(this.Lista);
-
+  
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+      primaryColor: Colors.grey, // Color principal de la barra de búsqueda
+      textTheme: TextTheme(
+        headline6: TextStyle(
+          color: Colors.black, // Color del texto de la barra de búsqueda
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(
+          color: Colors.grey, // Color del texto de sugerencia
+        ),
+      ),
+    );
+  }
   @override
   List<Widget>? buildActions(BuildContext context) {
     //limpia la pantalla
@@ -55,6 +71,7 @@ class SearchTarea extends SearchDelegate<String>{
           },
         ),
     ],
+    
   );
   }
 

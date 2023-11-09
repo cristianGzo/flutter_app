@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   //para login hasta antes del @oveeride
   bool isSessionSaved = false;
+  
 
   void initState() {
     super.initState();
@@ -119,10 +120,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Color.fromARGB(255, 23, 36, 53)),
                 child: Column(
                   // padding: EdgeInsets.symmetric(horizontal: 10),//para agregar paddin solo en lo horizontal symetrcic para eso se usa
-                  children: [txtUser, const SizedBox(height: 10), txtPass],
+                  children: [
+                    txtUser, const SizedBox(height: 10), txtPass],
                 ),
               ),
               imgLogo,
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, 'register');
+              }, child: Text('Registrar', style: TextStyle(fontSize: 20),)),
               sessionCheckboxContainer,
             ],
           ),
